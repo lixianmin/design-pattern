@@ -26,19 +26,34 @@
 
 ---
 
+#### Null service与Decorator
+
+当查找服务失败，或者想暂时禁用某个系统的时候，我们可以使用Null Object返回一个空服务提供器。比如，在开发过程中关闭音频可能会是一个很方便的功能。
+
+
+
+---
+
 #### Problems
 
 Service Locator用起来像一个更灵活、更可配置的Singleton，当被合理使用时，它能够让你的代码更有弹性，而且几乎没有什么运行时损失。相反，使用不当时，它会带来Singleton模式的所有缺点和糟糕的运行时开销。
 
 在使用Singleton时，你可以放心的调用代码，因为它理所当然的在那里，但Service Locator不同，我们**需要处理定位失败**的情况。
 
-Service Locator本质上仍然是一个Singleton，只不过它本身并不提供实质性的服务，它只是一个服务代理。这意味着这个服务可能在游戏中的任意代码在任意情况下使用，因此如果一个类只希望在特定上下文中被使用，那么最好避免使用这种模式以免将类服务暴露给全局环境。
+Service Locator本质上仍然是一个Singleton，只不过它本身并不提供实质性的服务，它只是一个服务代理。这意味着这个服务可能在游戏中的任意代码在任意情况下使用，因此如果一个类只希望在**特定上下文中被使用**，那么最好避免使用这种模式以免将类服务暴露给全局环境。
+
+
+
+> 依赖注入：外部代码负责为对象注入它所需求的依赖实例。
+>
+> 时序耦合：两份单独的代码必须按正确的顺序调用来保证程序正确工作。
 
 ---
 
 #### References
 
 1. [Singleton](http://gameprogrammingpatterns.com/singleton.html)
+2. [Service Locator](http://gameprogrammingpatterns.com/service-locator.html)
 
 
 
