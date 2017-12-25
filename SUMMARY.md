@@ -1,8 +1,8 @@
 # Summary
 
-## 设计模式回忆录
+## 设计模式手记
 
-* [Introduction](README.md)
-* [update method](update-method.md)
+* [Readme](README.md)
+* [更新方法](update-method.md)
 * [子类沙盒](subclass-sandbox.md)
 

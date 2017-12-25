@@ -1,3 +1,6 @@
-# My Awesome Book
+# 设计模式手记
 
-This file file serves as your book's preface, a great place to describe your book's content and ideas.
+
+
+记录与游戏程序研发相关的设计模式与解决方案，起因是今年可能要在完美开一堂可能与此相关的课程 --- 我也是被逼的啊 
+
