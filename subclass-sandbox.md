@@ -36,13 +36,21 @@
 
 #### Description
 
-如果你有一个non-virtual protected方法，那你可能已经在使用这个模式了。
+这是一个相当温和的设计模式，它只描述了一个基本思想，但并没有详细的实现机制。如果你有一个non-virtual protected方法，那你可能已经在使用这个模式了。
 
 可能的使用情形是：
 
 1. 如果你有一个带有大量subclasses的base class。
 2. subclasses之间有行为重叠，你希望在它们之间简单的共享代码。
 3. 你希望这些subclasses与程序的其它代码之间耦合最小化。
+
+一些相关的提示：
+
+1. 当你使用update method的时候，你的更新函数通常也是一个沙盒函数。
+2. Template method模式与本模式正好相反。在这两个模式中，你都使用一系列操作原语来实现一个函数。使用子类沙盒模式时，函数在subclasses中，原语操作在base class中；而使用Template method时，函数骨架在base class中，而原语操作在subclass中实现。
+3. 你可以将本模式看作是外观模式（Facade）的变种。
+
+
 
 我真会有需求建立大量的subclasses吗？真实游戏世界里的例子：
 
