@@ -1,14 +1,8 @@
 # Summary
 
-## Abstract
+## 设计模式回忆录
 
 * [Introduction](README.md)
-* [First Chapter](chapter1.md)
-* [更新方法](geng-xin-fang-fa.md)
-
-## 更新方法
-
-* [Introduction](geng-xin-fang-fa/this-is-ar.md)
-
-## Abstract
+* [update method](update-method.md)
+* [subclass sandbox](subclass-sandbox.md)
 
