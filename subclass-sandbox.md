@@ -50,8 +50,6 @@
 2. Template method模式与本模式正好相反。在这两个模式中，你都使用一系列操作原语来实现一个函数。使用子类沙盒模式时，函数在subclasses中，原语操作在base class中；而使用Template method时，函数骨架在base class中，而原语操作在subclass中实现。
 3. 你可以将本模式看作是外观模式（Facade）的变种。
 
-
-
 我真会有需求建立大量的subclasses吗？真实游戏世界里的例子：
 
 1. Unity3d里的MonoBehaviour, EditorWindow等，当然里面的可能有很多方法没有故意设计成protected
