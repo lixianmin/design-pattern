@@ -4,5 +4,5 @@
 
 * [Introduction](README.md)
 * [update method](update-method.md)
-* [subclass sandbox](subclass-sandbox.md)
+* [子类沙盒](subclass-sandbox.md)
 
