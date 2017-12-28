@@ -26,7 +26,7 @@
 
 ---
 
-#### Null service与Decorator
+#### Null service与Logging Decorator
 
 当查找服务失败，或者想暂时禁用某个系统的时候，我们可以使用Null Object返回一个空服务提供器。比如，在开发过程中关闭音频可能会是一个很方便的功能。
 
