@@ -14,11 +14,11 @@
 函数            | 遍历类型      | cpu开销   | gc开销
 ---             |-              |---        |-
 SortedTable     | Pair          | 6         | 0
--               | Values        | 2         | 0
--               | ==Values[i]== | ==1==     | ==0==
+.               | Values        | 2         | 0
+.               | ==Values[i]== | ==1==     | ==0==
 Dictionary      | Pair          | 7         | 0
--               | Values        | 8         | 12B
+.               | Values        | 8         | 12B
 Hashable        | Pair          | 4         | 36B
--               | Values        | 3         | 36B
+.               | Values        | 3         | 36B
 SortedDictionary| Pair          | 18        | 100B
--               | Values        | 13        | 112B
+.               | Values        | 13        | 112B
