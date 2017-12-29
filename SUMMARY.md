@@ -8,4 +8,5 @@
 * [Update Method](update-method.md)
 * [子类沙盒](subclass-sandbox.md)
 * [服务定位器](service-locator.md)
+* [References](references.md)
 
