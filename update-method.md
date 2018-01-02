@@ -50,10 +50,6 @@ Hashtable设计的主要目标是根据key值快速的index/add/remove对象，�
 | SortedDictionary | Pair | 18 | 100B |
 |  | Values | 13 | 112B |
 
-
-
-
-
 ---
 
 #### 数组快照
@@ -82,4 +78,8 @@ Lua测试结果为：
 | table拷贝 | 2.7 | 通过for循环将数组复制到snapshot tabel中，然后再遍历snapshot table |
 
 
+
+测试代码链接：  
+1. [MBArraySnapshotSpeed.cs](/code/MBArraySnapshotSpeed.cs)  
+2. [ArraySnapshotSpeed.lua](/code/ArraySnapshotSpeed.lua)
 
