@@ -38,16 +38,18 @@ Hashtable设计的主要目标是根据key值快速的index/add/remove对象，�
 
 一个建议的方案是使用SortedTable，哈哈哈哈，终于出场了。这是双缓冲模式的一个变种，在C\#中实测，长度8192的数组，如果可以使用Array.Copy\(\)这种内置方法进行数组对拷的话，消耗时间约为直接遍历数组的1.04倍，如果只能使用遍历赋值的话，则消耗时间约为直接遍历的4.4倍。所以在lua中使用该模式可能需要首先评估一下。
 
-测试环境：红米Note3
+
+
+测试环境：红米Note3 + Unity3d 2017.1f1
 
 | 遍历类型 | cpu开销 | 描述 |
 | :--- | :--- | :--- |
-| object\[\] | 1 |  |
-| **数组快照** | 2 | Array.Copy\(object\[\], snapshot[], size\) |
-| 数组拷贝 | 18 | 通过遍历原始数组，复制数据到snapshot[]中，然后再遍历snapshot[] |
+| object\[\] | 1 | 原始数组，比较的基准 |
+| **数组快照** | 2 | Array.Copy\(object\[\], snapshot\[\], size\) |
+| 数组拷贝 | 18 | 通过遍历原始数组，复制数据到snapshot\[\]中，然后再遍历snapshot\[\] |
 | List&lt;object&gt; | 7 |  |
 | Dictionary&lt;int, object&gt; | 23 | 采用while\(iter.MoveNext\(\)\) |
-|  |  |  |
+| Dictionary快照 | 34 | dict.Values.CopyTo\(snapshot\[\]\) |
 
 Hashtable的遍历速度可能只有array的几分之一，在Unit3d中实测C\#各容器的遍历开销对比如下，其中SortedTable为自定义映射表，基于array使用二分查找实现：
 
