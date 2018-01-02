@@ -3,6 +3,7 @@
 ## 设计模式手记
 
 * [Readme](README.md)
+* [Object Oriented Design](object-oriented-design.md)
 * [Singleton](singleton.md)
 * [Null Object](null-object.md)
 * [Update Method](update-method.md)
