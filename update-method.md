@@ -25,42 +25,18 @@
 
 #### 谨慎使用Hashtable类容器遍历对象
 
-另外，在游戏中，所有对象都在每帧进行模拟，但这**并非真正同步**，而是存在了先后顺序。游戏循环在每帧遍历对象并逐个更新它们，在Update\(\)的调用中，多数对象能够访问到游戏世界的其它部分，包括那些正在更新的其它对象，这意味着，游戏循环更新对象的顺序意义重大。
+在游戏中，所有对象都在每帧进行模拟，但这**并非真正同步**，而是存在了先后顺序。游戏循环在每帧遍历对象并逐个更新它们，在Update\(\)的调用中，多数对象能够访问到游戏世界的其它部分，包括那些正在更新的其它对象，这意味着，游戏循环更新对象的顺序意义重大。
 
 Hashtable设计的主要目标是根据key值快速的index/add/remove对象，这些操作的平均时间复杂度都是O\(1\)的。Hashtable的设计理念决定了它在存储上存在着随机的成分，因此当Hashtable容量发生变化的时候，其遍历顺序很可能发生变化。
 
 如果基于Hashtable容器进行对象更新，并且中间恰好发生了add/remove操作，那么将产生几个很难解决的问题：
 
 1. 如何标记新加入的对象，这些对象在本帧中不需要更新。
-2. 如果标记某些对象在本帧已经更新过了，从而在Hashtable遍历顺序发生变化的时候，再次遇到同一个对象时不会重复更新它。
+2. 如果标记某些对象在本帧已经更新过了，从而在Hashtable遍历顺序发生变化的时候，再次遇到同一个对象时不应该重复更新它。
 
 因此，基于遍历顺序不稳定的Hashtable进行对象更新可能会引入不易重现的bug。一个可能的解决方案是使用两个单独的table分别记录新加入的和被移除的对象，并在Update\(\)结束的时候基于这两个table的数据重新组织你的主对象Hashtable。但这也带来了新的问题：你**需要在所有可能用到主对象Hashtable的小心的维护三张table之间的关系，比如GetItem\(\), AddItem\(\), RemoveItem\(\)等等**所有这些可能在遍历过程被调用到方法。
 
-一个可行的方案是使用**数组快照**。比如使用自定义的SortedTable（基于数组+二分查找的关联表，原理与C#中内置的SortedDictionary相同）。基本思路是在每次Update()时，先使用内置Array.Copy()获取一个当前对象列表的数组快照，然后遍历这个数组。
-
-，终于出场了。这是双缓冲模式的一个变种，在C\#中实测，长度8192的数组，如果可以使用Array.Copy\(\)这种内置方法进行数组对拷的话，消耗时间约为直接遍历数组的1.04倍，如果只能使用遍历赋值的话，则消耗时间约为直接遍历的4.4倍。所以在lua中使用该模式可能需要首先评估一下。
-
-测试环境：红米Note3 + Unity3d 2017.1f1 + Lua5.1 + 对象列表长度为8192
-
-| 遍历类型（C\#） | cpu开销 | 描述 |
-| :--- | :--- | :--- |
-| object\[\] | 1 | 基准类型，原始数组 |
-| **数组快照** | 2 | Array.Copy\(object\[\], snapshot\[\], size\) |
-| 数组拷贝 | 18 | 通过for循环遍历原始数组，复制数据到snapshot\[\]中，然后再遍历snapshot\[\] |
-| List&lt;object&gt; | 7 | **自定义SortedTable最差可以做到这个级别**  |
-| Dictionary&lt;int, object&gt; | 23 | 采用while\(iter.MoveNext\(\)\) |
-| Dictionary快照 | 34 | dict.Values.CopyTo\(snapshot\[\]\) |
-
-
-
-| 遍历类型（lua） | cpu开销 | 描述 |
-| :--- | :--- | :--- |
-| table | 1 | 基准类型，原始table |
-| table拷贝 | 2.7 | 通过for循环将数组复制到snapshot tabel中，然后再遍历snapshot table |
-
-
-
-Hashtable的遍历速度可能只有array的几分之一，在Unit3d中实测C\#各容器的遍历开销对比如下，其中SortedTable为自定义映射表，基于array使用二分查找实现：
+另外，Hashtable的遍历速度通常较慢，可能只有array的几分之一，下表是在Unit3d中实测C\#各容器的遍历开销对比，下测试环境为Mac电脑：
 
 | 函数 | 遍历类型 | cpu开销 | gc开销 |
 | --- | --- | --- | --- |
@@ -73,6 +49,37 @@ Hashtable的遍历速度可能只有array的几分之一，在Unit3d中实测C\#
 |  | Values | 3 | 36B |
 | SortedDictionary | Pair | 18 | 100B |
 |  | Values | 13 | 112B |
+
+
+
+
+
+---
+
+#### 数组快照
+
+一个可以考虑的方案是使用在自定义容器中使用数组快照，比如SortedTable，这是一个基于**array+二分查找**的映射表，原理与C\#中内置的SortedDictionary相同。基本思路是在每次Update\(\)时，先使用内置Array.Copy\(\)获取一个当前对象列表的数组快照，然后遍历这个数组，其实是这是双缓冲模式的一个变种。
+
+测试环境：红米Note3，Unity 2017.1f1，Lua jit 5.1，对象列表长度为8192
+
+C\#测试结果为：
+
+| 遍历类型（C\#） | cpu开销 | 描述 |
+| :--- | :--- | :--- |
+| object\[\] | 1 | 基准类型，原始数组 |
+| **数组快照** | 2 | Array.Copy\(object\[\], snapshot\[\], size\) |
+| 数组拷贝 | 18 | 通过for循环遍历原始数组，复制数据到snapshot\[\]中，然后再遍历snapshot\[\] |
+| List&lt;object&gt; | 7 | 使用for循环，无gcalloc |
+| **SortedTable&lt;int, object&gt;** | 2 | 基于 array&二分查找 的自定义表，使用Array.Copy\(\)复制数据，比List要快 |
+| Dictionary&lt;int, object&gt; | 23 | 采用while\(iter.MoveNext\(\)\) |
+| Dictionary快照 | 34 | dict.Values.CopyTo\(snapshot\[\]\) |
+
+Lua测试结果为：
+
+| 遍历类型（lua） | cpu开销 | 描述 |
+| :--- | :--- | :--- |
+| table | 1 | 基准类型，原始table |
+| table拷贝 | 2.7 | 通过for循环将数组复制到snapshot tabel中，然后再遍历snapshot table |
 
 
 
