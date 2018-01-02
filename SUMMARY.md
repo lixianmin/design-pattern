@@ -7,8 +7,8 @@
 * [Null Object](null-object.md)
 * [Update Method](update-method.md)
 * [子类沙盒](subclass-sandbox.md)
-* [References](references.md)
 * [解耦模式](decoupling-patterns.md)
   * [组件模式](component.md)
   * [服务定位器](service-locator.md)
+* [References](references.md)
 
