@@ -16,6 +16,6 @@
 #### References
 
 1. [Data Oriented Design](http://www.dataorienteddesign.com)
-2. 
+2. [进化游戏的层次结构 - 用组件来重构你的游戏实体](http://www.cnblogs.com/Henrya2/archive/2010/10/14/1851717.html)
 
 
