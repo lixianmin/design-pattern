@@ -83,3 +83,18 @@ Lua测试结果为：
 1. [MBArraySnapshotSpeed.cs](/code/MBArraySnapshotSpeed.cs)  
 2. [ArraySnapshotSpeed.lua](/code/ArraySnapshotSpeed.lua)
 
+
+----
+#### References
+
+磁盘的读写速度通常差距比较大，写的速度可以只是读的1/N，这个N可能是 3,4,5,6,7,8,9中的一个；但是内存，读写往往速度一样，copy则更快
+
+1. [Test Read & Write Speed of an External Drive or USB Flash Key](http://osxdaily.com/2013/08/31/test-read-write-speed-external-drive/)
+
+
+
+
+
+
+
+
