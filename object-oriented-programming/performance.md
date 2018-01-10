@@ -32,7 +32,7 @@ struct Particle {
 
 在OOP中，通过封装，一个类的各种功能会被实现为多个成员函数，而每个成员函数实际上可能只会存取少量的成员变量。这可能形式非常严重的问题，例如：
 
-```c++
+```cpp
 for (Particle* p = begin; p != end; ++p)
     p->position += p->velocity * dt; // 或 p->SimulateMotion(dt);
     
