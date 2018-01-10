@@ -17,7 +17,7 @@
 
 ![](/images/update-method-remove.png)
 
-一个修补方案是将移除对象这件事情也计算在内，精确控制迭代器的指向；另一个方案是将移除操作推迟到本次循环遍历结束之后。将要被移除的对象标记为dead，但并不从列表中移除它，在更新期间，确保跳过那些被标记为dead的对象，接着等到遍历更新结束后，再遍历列表来移除这些“尸体”。
+一个修补方案是把remove对象这件事情出计算在内，精确控制迭代器的指向，注意此时可以同时需要调整前面临时存储的遍历对象的个数，以防止更新到新add的对象，或者列表下标溢出；另一个方案是将移除操作推迟到本次循环遍历结束之后。将要被移除的对象标记为dead，但并不从列表中移除它，在更新期间，确保跳过那些被标记为dead的对象，接着等到遍历更新结束后，再遍历列表来移除这些“尸体”。
 
 另外需要注意的是：新加入的对象通常可以被GetItem\(id\)的方式索引到，但被标记为dead的对象通常就不应该被索引到了，所以你有可能需要对此做一些区分。
 
@@ -36,7 +36,7 @@ Hashtable设计的主要目标是根据key值快速的index/add/remove对象，�
 
 因此，基于遍历顺序不稳定的Hashtable进行对象更新可能会引入不易重现的bug。一个可能的解决方案是使用两个单独的table分别记录新加入的和被移除的对象，并在Update\(\)结束的时候基于这两个table的数据重新组织你的主对象Hashtable。但这也带来了新的问题：你**需要在所有可能用到主对象Hashtable的小心的维护三张table之间的关系，比如GetItem\(\), AddItem\(\), RemoveItem\(\)等等**所有这些可能在遍历过程被调用到方法。
 
-另外，Hashtable的遍历速度通常较慢，可能只有array的几分之一，下表是在Unit3d中实测C\#各容器的遍历开销对比，下测试环境为Mac电脑：
+另外，Hash table的遍历速度通常较慢，可能只有array的几分之一，下表是Unit3d中实测C\#各容器的遍历开销对比，测试环境为Mac电脑：
 
 | 函数 | 遍历类型 | cpu开销 | gc开销 |
 | --- | --- | --- | --- |
@@ -77,24 +77,17 @@ Lua测试结果为：
 | table | 1 | 基准类型，原始table |
 | table拷贝 | 2.7 | 通过for循环将数组复制到snapshot tabel中，然后再遍历snapshot table |
 
-
-
 测试代码链接：  
 1. [MBArraySnapshotSpeed.cs](/code/MBArraySnapshotSpeed.cs)  
 2. [ArraySnapshotSpeed.lua](/code/ArraySnapshotSpeed.lua)
 
+---
 
-----
 #### References
 
 磁盘的读写速度通常差距比较大，写的速度可以只是读的1/N，这个N可能是 3,4,5,6,7,8,9中的一个；但是内存，读写往往速度一样，copy则更快
 
 1. [Test Read & Write Speed of an External Drive or USB Flash Key](http://osxdaily.com/2013/08/31/test-read-write-speed-external-drive/)
-
-
-
-
-
 
 
 
