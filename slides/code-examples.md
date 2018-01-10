@@ -3,8 +3,6 @@
 
 #### Logging Decorator —static language : C++
 
-
-
 ```cpp
 class LoggedGameState : public GameState
 {
@@ -53,23 +51,18 @@ function This:EnableLog (klass)
 end
 ```
 
-
-
 ---
 
 #### Array snapshot
 
-
-
 ```java
-
 class PlayerManager
 {
     public void AddPlayer (int id, Player player)
     [
         _players.Add(id, player);
     }
-    
+
     public void Update ()
     [
         if (_capacity != _players.Capacity)
@@ -77,39 +70,21 @@ class PlayerManager
             _capacity = _players.Capacity;
             _snapshot = new Player[_capacity];
         }
-        
+
         int count = _players.Count;
         Array.Copy(_players.Values, _snapshot, count);
-        
+
         for (int i= 0; i< count; ++i)
         {
             _snapshot[i].Update();
         }               
     }
-    
+
     private readonly SortedTable<int, Player> _players = new SortedTable<int, Player>();
     private Player[] _snapshot = new Player[0];
     private int _capacity;
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
