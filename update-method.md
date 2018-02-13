@@ -56,19 +56,19 @@ Hashtable设计的主要目标是根据key值快速的index/add/remove对象，�
 
 一个可以考虑的方案是使用在自定义容器中使用数组快照，比如SortedTable，这是一个基于**array+二分查找**的映射表，原理与C\#中内置的SortedDictionary相同。基本思路是在每次Update\(\)时，先使用内置Array.Copy\(\)获取一个当前对象列表的数组快照，然后遍历这个数组，其实是这是双缓冲模式的一个变种。
 
-测试环境：红米Note3，Unity 2017.1f1，Lua jit 5.1，对象列表长度为8192
+测试环境：红米Note3，Unity 2017.1.0f3，Lua jit 5.1，对象列表长度为8192
 
 C\#测试结果为：
 
 | 遍历类型（C\#） | cpu开销 | 描述 |
 | :--- | :--- | :--- |
 | object\[\] | 1 | 基准类型，原始数组 |
-| **数组快照** | 2 | Array.Copy\(object\[\], snapshot\[\], size\) |
-| 数组拷贝 | 18 | 通过for循环遍历原始数组，复制数据到snapshot\[\]中，然后再遍历snapshot\[\] |
-| List&lt;object&gt; | 7 | 使用for循环，无gcalloc |
-| **SortedTable&lt;int, object&gt;** | 2 | 基于 array&二分查找 的自定义表，使用Array.Copy\(\)复制数据，比List要快 |
-| Dictionary&lt;int, object&gt; | 23 | 采用while\(iter.MoveNext\(\)\) |
-| Dictionary快照 | 34 | dict.Values.CopyTo\(snapshot\[\]\) |
+| **数组快照** | 1.1 | Array.Copy\(object\[\], snapshot\[\], size\) |
+| 数组拷贝 | 10.5 | 通过for循环遍历原始数组，复制数据到snapshot\[\]中，然后再遍历snapshot\[\] |
+| List&lt;object&gt; | 4 | 使用for循环，无gcalloc |
+| **SortedTable&lt;int, object&gt;** | 2.5 | 基于 array&二分查找 的自定义表，使用Array.Copy\(\)复制数据，比List要快 |
+| Dictionary&lt;int, object&gt; | 10 | 采用while\(iter.MoveNext\(\)\) |
+| Dictionary快照 | 20 | dict.Values.CopyTo\(snapshot\[\]\) |
 
 Lua测试结果为：
 
