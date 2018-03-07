@@ -17,6 +17,6 @@
 * [解耦模式](decoupling-patterns.md)
   * [组件模式](component.md)
   * [服务定位器](service-locator.md)
-  * [消息队列](message-bus.md)
+  * [消息队列](message-pattern.md)
 * [References](references.md)
 
