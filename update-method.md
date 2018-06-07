@@ -1,4 +1,3 @@
-
 ---
 
 #### intent
@@ -15,7 +14,7 @@
 
 更令人担忧的问题是遍历时移除对象，这有可能会导致某些对象在本帧被跳过而不被更新。比如下面这个例子：你希望在循环中移除一只foul beast，而它碰巧位于你当前所更新的对象的前面，这可能会让你不小心跳过一个对象（helpless peasant）。
 
-![](/images/update-method-remove.png)
+![](https://raw.githubusercontent.com/lixianmin/design-pattern/master/images/update-method-remove.png)
 
 一个修补方案是把remove对象这件事情出计算在内，精确控制迭代器的指向，注意此时可以同时需要调整前面临时存储的遍历对象的个数，以防止更新到新add的对象，或者列表下标溢出；另一个方案是将移除操作推迟到本次循环遍历结束之后。将要被移除的对象标记为dead，但并不从列表中移除它，在更新期间，确保跳过那些被标记为dead的对象，接着等到遍历更新结束后，再遍历列表来移除这些“尸体”。
 
