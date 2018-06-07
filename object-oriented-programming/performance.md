@@ -1,7 +1,7 @@
 
 ---
 
-在计算机体系结构中，[内存墙](https://baike.baidu.com/item/%E5%86%85%E5%AD%98%E5%A2%99)问题一直存在，并且有越来越严重的趋势，而OOP有加重这种趋势的倾向。
+在计算机体系结构中，[内存墙](https://baike.baidu.com/item/内存墙)问题一直存在，并且有越来越严重的趋势，而OOP有加重这种趋势的倾向。
 
 OOP编程可能不是cache friendly，跟并行比较的话：OO要求封装，并行要求开放；OO要array of struct,并行要struct of array；OO要求灵气和操作绑定，并行要求数据和操作分离。
 
@@ -25,7 +25,6 @@ struct Particle {
     float age;
     // ...
 }
-
 ```
 
 即使不使用多态，我们几乎不加思索地会使用这种数据布局方式。我们通常会以为，由于各个成员变量都紧凑地放置在一起，这种数据布局通常对缓存友好。然而，实际上，我们需要考虑数据的存取模式（access pattern）。
@@ -35,10 +34,9 @@ struct Particle {
 ```
 for (Particle* p = begin; p != end; ++p)
     p->position += p->velocity * dt; // 或 p->SimulateMotion(dt);
-    
 ```
 
-在这种模式下，实阶上只存取了两个成员变量，但其他成员变量也会载入缓存造成浪费。当然，如果在迭代的时候能存取尽量多的成员变量，这个问题可能并不存在，但实际上是很困难的。
+在这种模式下，实际上只存取了两个成员变量，但其他成员变量也会载入缓存造成浪费。当然，如果在迭代的时候能存取尽量多的成员变量，这个问题可能并不存在，但实际上是很困难的。
 
 如果采用传统的OOP编程范式及实现方式，数据布局的问题几乎没有解决方案。所以在某些情况下，应该放弃OOP方式，以数据的存取及布局为编程的考虑重中，称作面向数据编程（data-oriented programming, DOP）。
 
@@ -47,6 +45,10 @@ for (Particle* p = begin; p != end; ++p)
 游戏方面，CPU性能很少成为瓶颈。客户端一般是GPU瓶颈，服务器一般是IO瓶颈。
 
 ---
+
 #### References
 
 1. [面向对象编程的弊端是什么？ - Milo Yip的回答 - 知乎](https://www.zhihu.com/question/20275578/answer/27046327)
+
+
+

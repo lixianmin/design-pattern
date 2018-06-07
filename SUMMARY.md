@@ -20,4 +20,5 @@
   * [服务定位器](service-locator.md)
   * [消息模式](message-pattern.md)
 * [References](references.md)
+* [Summary](SUMMARY.md)
 
