@@ -9,6 +9,7 @@
   * [组合](object-oriented-programming/composition.md)
   * [AOP](object-oriented-programming/aspect-oriented-programming.md)
   * [性能](object-oriented-programming/performance.md)
+  * [S.O.L.I.D五原则](object-oriented-programming/solid.md)
 * [Singleton](singleton.md)
 * [Null Object](null-object.md)
 * [Template Method](template-method.md)
